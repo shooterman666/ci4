@@ -20,7 +20,7 @@ class AuthController extends BaseController
 
 
 
-            $dataUser = ['username' => 'fuji', 'password' => 'adf9240ea363e5883f485dfcec2da8c6', 'role' => 'admin']; // passw 123
+            $dataUser = ['username' => 'fuji', 'password' => 'e206a54e97690cce50cc872dd70ee896', 'role' => 'admin']; // passw 123
 
             if ($username == $dataUser['username']) {
                 if (md5($password) == $dataUser['password']) {
