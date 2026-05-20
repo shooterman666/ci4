@@ -20,14 +20,24 @@ class AuthController extends BaseController
 
 
 
-            $dataUser = ['username' => 'fuji', 'password' => 'e206a54e97690cce50cc872dd70ee896', 'role' => 'admin']; // passw 123
+            $dataUser = [
+                'username' => 'fuji', 
+                'password' => 'e206a54e97690cce50cc872dd70ee896', 
+                'role' => 'admin',
+                'email' => 'htop@github.com',
+                'picture' => 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Bundesarchiv_Bild_146-2006-0122%2C_Hans-Joachim_Marseille.jpg'
+            ]; 
 
             if ($username == $dataUser['username']) {
                 if (md5($password) == $dataUser['password']) {
                     session()->set([
                         'username' => $dataUser['username'],
                         'role' => $dataUser['role'],
-                        'isLoggedIn' => TRUE
+                        'email' => $dataUser['email'],
+                        'picture' => $dataUser['picture'],
+                        'isLoggedIn' => TRUE,
+                        'time_when_login' => time()
+
                     ]);
 
 
@@ -52,3 +62,4 @@ class AuthController extends BaseController
         return redirect()->to('login');
     }
 }
+
