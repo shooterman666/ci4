@@ -4,53 +4,52 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class User extends Migration
+class CreateUserTable extends Migration
 {
     public function up()
     {
         $this->forge->addField([
             'id' => [
                 'type' => 'INT',
-                'unsigned' => TRUE,
-                'auto_increment' => TRUE
+                'constraint' => 11,
+                'unsigned' => true,
+                'auto_increment' => true
             ],
             'username' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-                'null' => FALSE,
-                'unique' => TRUE,
+                'null' => false,
+                'unique' => true,
             ],
             'email' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-                'null' => FALSE,
-                'unique' => TRUE,
+                'null' => false,
+                'unique' => true,
             ],
             'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-                'null' => FALSE,
+                'null' => false,
             ],
             'role' => [
                 'type' => 'VARCHAR',
                 'constraint' => 50,
-                'null' => FALSE,
+                'null' => false,
             ],
             'created_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'DATETIME',
+                'null' => true
             ],
             'updated_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'DATETIME',
+                'null' => true
             ]
         ]);
 
-        $this->forge->addKey('id', TRUE);
+        $this->forge->addKey('id', true);
         $this->forge->createTable('user');
     }
-
-    //--------------------------------------------------------------------
 
     public function down()
     {

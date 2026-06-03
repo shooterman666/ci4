@@ -4,51 +4,54 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UserModel;
 
 class AuthController extends BaseController
 {
+    protected $userModel;
+
     function __construct()
     {
         helper('form');
+        $this->userModel = new UserModel();
     }
 
     public function login()
     {
         if ($this->request->getPost()) {
-            $username = $this->request->getVar('username');
-            $password = $this->request->getVar('password');
+            $rules = [
+                'username' => 'required|min_length[6]',
+                'password' => 'required|min_length[7]|numeric',
+            ];
 
+            if ($this->validate($rules)) {
+                $username = $this->request->getVar('username');
+                $password = $this->request->getVar('password');
 
+                $dataUser = $this->userModel->where(['username' => $username])->first();
 
-            $dataUser = [
-                'username' => 'fuji', 
-                'password' => 'e206a54e97690cce50cc872dd70ee896', 
-                'role' => 'admin',
-                'email' => 'htop@github.com',
-                'picture' => 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Bundesarchiv_Bild_146-2006-0122%2C_Hans-Joachim_Marseille.jpg'
-            ]; 
+                if ($dataUser) {
+                    if (password_verify($password, $dataUser['password'])) {
+                        session()->set([
+                            'username' => $dataUser['username'],
+                            'role' => $dataUser['role'],
+                            'email' => $dataUser['email'],
+                            // Assuming 'picture' is not in DB or can be added later if needed.
+                            'isLoggedIn' => TRUE,
+                            'time_when_login' => time()
+                        ]);
 
-            if ($username == $dataUser['username']) {
-                if (md5($password) == $dataUser['password']) {
-                    session()->set([
-                        'username' => $dataUser['username'],
-                        'role' => $dataUser['role'],
-                        'email' => $dataUser['email'],
-                        'picture' => $dataUser['picture'],
-                        'isLoggedIn' => TRUE,
-                        'time_when_login' => time()
-
-                    ]);
-
-
-                    return redirect()->to(base_url('/'));
+                        return redirect()->to(base_url('/'));
+                    } else {
+                        session()->setFlashdata('failed', 'Username & Password Salah');
+                        return redirect()->back();
+                    }
                 } else {
-                    
-                    session()->setFlashdata('failed', 'Username & Password Salah');
+                    session()->setFlashdata('failed', 'Username Tidak Ditemukan');
                     return redirect()->back();
                 }
             } else {
-                session()->setFlashdata('failed', 'Username Tidak Ditemukan');
+                session()->setFlashdata('failed', $this->validator->listErrors());
                 return redirect()->back();
             }
         } else {
@@ -62,4 +65,3 @@ class AuthController extends BaseController
         return redirect()->to('login');
     }
 }
-

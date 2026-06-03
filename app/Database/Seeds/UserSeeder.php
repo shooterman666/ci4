@@ -13,8 +13,8 @@ class UserSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             $data = [
-                'username' => $faker->userName,
-                'email' => $faker->email,
+                'username' => $faker->unique()->userName,
+                'email' => $faker->unique()->email,
                 'password' => password_hash('1234567', PASSWORD_DEFAULT),
                 'role' => $faker->randomElement(['admin', 'guest']),
                 'created_at' => date("Y-m-d H:i:s"),

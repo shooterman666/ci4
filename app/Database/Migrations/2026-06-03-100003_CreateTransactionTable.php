@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Transaction extends Migration
+class CreateTransactionTable extends Migration
 {
     public function up()
     {
@@ -12,42 +12,43 @@ class Transaction extends Migration
             'id' => [
                 'type' => 'INT',
                 'constraint' => 11,
-                'unsigned' => TRUE,
-                'auto_increment' => TRUE
+                'unsigned' => true,
+                'auto_increment' => true
             ],
             'username' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
-                'null' => FALSE,
+                'null' => false,
             ],
             'total_harga' => [
                 'type' => 'DOUBLE',
-                'null' => FALSE,
+                'null' => false,
             ],
             'alamat' => [
                 'type' => 'TEXT',
-                'null' => FALSE,
+                'null' => false,
             ],
             'ongkir' => [
                 'type' => 'DOUBLE',
-                'null' => TRUE
+                'null' => true
             ],
             'status' => [
                 'type' => 'INT',
                 'constraint' => 1,
-                'null' => FALSE,
+                'null' => false,
             ],
             'created_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'DATETIME',
+                'null' => true
             ],
             'updated_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'DATETIME',
+                'null' => true
             ]
         ]);
 
-        $this->forge->addKey('id', TRUE);
+        $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('username', 'user', 'username', 'CASCADE', 'CASCADE');
         $this->forge->createTable('transaction');
     }
 

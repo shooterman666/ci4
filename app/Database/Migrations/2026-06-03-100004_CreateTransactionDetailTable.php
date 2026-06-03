@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class TransactionDetail extends Migration
+class CreateTransactionDetailTable extends Migration
 {
     public function up()
     {
@@ -12,43 +12,45 @@ class TransactionDetail extends Migration
             'id' => [
                 'type' => 'INT',
                 'constraint' => 11,
-                'unsigned' => TRUE,
-                'auto_increment' => TRUE
+                'unsigned' => true,
+                'auto_increment' => true
             ],
             'transaction_id' => [
                 'type' => 'INT',
                 'constraint' => 11,
-                'unsigned' => TRUE,
+                'unsigned' => true,
             ],
             'product_id' => [
                 'type' => 'INT',
                 'constraint' => 11,
-                'unsigned' => TRUE,
+                'unsigned' => true,
             ],
             'jumlah' => [
                 'type' => 'INT',
                 'constraint' => 5,
-                'null' => FALSE,
+                'null' => false,
             ],
             'diskon' => [
                 'type' => 'DOUBLE',
-                'null' => TRUE,
+                'null' => true,
             ],
             'subtotal_harga' => [
                 'type' => 'DOUBLE',
-                'null' => FALSE,
+                'null' => false,
             ],
             'created_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'DATETIME',
+                'null' => true
             ],
             'updated_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'DATETIME',
+                'null' => true
             ]
         ]);
 
-        $this->forge->addKey('id', TRUE);
+        $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('transaction_id', 'transaction', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('product_id', 'product', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('transaction_detail');
     }
 
