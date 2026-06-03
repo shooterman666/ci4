@@ -8,9 +8,18 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
+        // Data statis untuk nicimici
+        $nicimici = [
+            'username' => 'nicimici',
+            'email'    => 'nicimici@example.com',
+            'password' => password_hash('12345678', PASSWORD_DEFAULT),
+            'role'     => 'admin',
+            'created_at' => date("Y-m-d H:i:s"),
+        ];
+        $this->db->table('user')->insert($nicimici);
+
         $faker = \Faker\Factory::create('id_ID');
         
-
         for ($i = 0; $i < 10; $i++) {
             $data = [
                 'username' => $faker->unique()->userName,
