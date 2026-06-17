@@ -3,13 +3,65 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
 
 class TransaksiController extends BaseController
 {
+    protected $cart;
+
+    public function __construct()
+    {
+        helper(['number', 'form']);
+        $this->cart = service('cart');
+    }
+
     public function index()
     {
-        return view('v_keranjang');
-        //
+        $data = [
+            'items' => $this->cart->contents(),
+            'total' => $this->cart->total()
+        ];
+        return view('v_keranjang', $data);
+    }
+
+    public function cart_add()
+    {
+        $this->cart->insert([
+            'id'      => $this->request->getPost('id'),
+            'qty'     => 1,
+            'price'   => $this->request->getPost('harga'),
+            'name'    => $this->request->getPost('nama'),
+            'options' => ['foto' => $this->request->getPost('foto')]
+        ]);
+
+        session()->setFlashdata('success', 'Produk berhasil ditambahkan ke keranjang.');
+        return redirect()->to('/');
+    }
+
+    public function cart_edit()
+    {
+        $i = 1;
+        foreach ($this->cart->contents() as $item) {
+            $this->cart->update([
+                'rowid' => $item['rowid'],
+                'qty'   => $this->request->getPost('qty' . $i++)
+            ]);
+        }
+
+        session()->setFlashdata('success', 'Keranjang berhasil diperbarui.');
+        return redirect()->to('keranjang');
+    }
+
+    public function cart_delete($rowid)
+    {
+        $this->cart->remove($rowid);
+        session()->setFlashdata('success', 'Produk berhasil dihapus dari keranjang.');
+        return redirect()->to('keranjang');
+    }
+
+    public function cart_clear()
+    {
+        $this->cart->destroy();
+        session()->setFlashdata('success', 'Keranjang berhasil dikosongkan.');
+        return redirect()->to('keranjang');
     }
 }

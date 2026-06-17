@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\ProductModel;
+use Dompdf\Dompdf;
 
 class ProdukController extends BaseController
 {
@@ -21,6 +22,18 @@ class ProdukController extends BaseController
         return view('produk/index', [
             'products' => $this->productModel->findAll()
         ]);
+    }
+
+    public function download()
+    {
+        $products = $this->productModel->findAll();
+        $html = view('produk/download_pdf', ['products' => $products]);
+        
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream(date('Y-m-d-H-i-s') . '-produk.pdf', ['Attachment' => true]);
     }
 
     public function create()
