@@ -1,0 +1,43 @@
+### index (all products with pagination)
+GET http://localhost:8080/api/products?page=1&per_page=2
+Accept: application/json
+Authorization: Bearer my-secret-token
+
+### show (get single product)
+GET http://localhost:8080/api/products/1
+Authorization: Bearer my-secret-token
+
+### create (insert product)
+POST http://localhost:8080/api/products
+Authorization: Bearer my-secret-token
+Content-Type: application/json
+
+{
+  "nama": "Yoga Slim 7i Aura Edition",
+  "harga": 15000000,
+  "jumlah": 10
+}
+
+### update all field (PUT)
+PUT http://localhost:8080/api/products/13
+Authorization: Bearer my-secret-token
+Content-Type: application/json
+
+{
+  "nama": "Yoga Slim 7i Aura Editions",
+  "harga": 25000000,
+  "jumlah": 20
+}
+
+### update some field (PATCH)
+PATCH http://localhost:8080/api/products/13
+Authorization: Bearer my-secret-token
+Content-Type: application/json
+
+{ 
+  "jumlah": 25
+}
+
+### delete (remove product)
+DELETE http://localhost:8080/api/products/13
+Authorization: Bearer my-secret-token
