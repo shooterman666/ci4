@@ -17,6 +17,9 @@ if (session()->getFlashData('success')) {
 </div>
 
 <a href="<?= base_url('keranjang/clear') ?>" class="btn btn-danger mb-3">Kosongkan Keranjang</a>
+<?php if (!empty($items)) : ?>
+    <a class="btn btn-success mb-3" href="<?php echo base_url() ?>checkout">Selesai Belanja</a>
+<?php endif; ?>
 
 <?= form_open('keranjang/edit') ?>
 <table class="table datatable">
