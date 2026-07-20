@@ -80,7 +80,14 @@ History Transaksi Pembelian <strong><?= $username ?></strong>
                                 <hr>
                             <?php endforeach; ?>
                         <?php endif; ?>
-                        Ongkir <?= number_to_currency($item['ongkir'], 'IDR') ?>
+                        Ongkir <?= number_to_currency($item['ongkir'], 'IDR') ?><br>
+                        <?php if (!empty($item['kupon_code'])) : ?>
+                            Kupon <?= $item['kupon_code'] ?> (<?= number_to_currency($item['diskon_kupon'], 'IDR') ?>)<br>
+                        <?php endif; ?>
+                        Biaya Admin <?= number_to_currency($item['biaya_admin'], 'IDR') ?><br>
+                        <?php if ($item['cashback'] > 0) : ?>
+                            <span class="text-success">Cashback <?= number_to_currency($item['cashback'], 'IDR') ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

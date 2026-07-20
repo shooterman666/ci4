@@ -2,17 +2,19 @@
 
 namespace App\Controllers\Api;
 
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
+
 use App\Models\ProductModel;
 
 class ProdukController extends ResourceController
 {
-    protected $model;  
+    protected $model;
     private $token;
 
     function __construct()
-    { 
-        $this->model = new ProductModel(); 
+    {
+        $this->model = new ProductModel();
         $this->token = env('MY_API_KEY');
     }
 
@@ -78,6 +80,11 @@ class ProdukController extends ResourceController
         return $this->respond($product);
     }
 
+    public function new()
+    {
+        //
+    }
+
     public function create()
     {
         if (!$this->authenticate()) {
@@ -91,6 +98,11 @@ class ProdukController extends ResourceController
         return $this->respondCreated([
             'message' => 'Produk berhasil ditambahkan'
         ]);
+    }
+
+    public function edit($id = null)
+    {
+        //
     }
 
     public function update($id = null)

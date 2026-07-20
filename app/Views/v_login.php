@@ -5,17 +5,16 @@ $username = [
     'name' => 'username',
     'id' => 'username',
     'class' => 'form-control',
-    'required' => true,
-    'minlength' => 6
+    'value' => old('username'),
 ];
 
 $password = [
     'name' => 'password',
     'id' => 'password',
     'class' => 'form-control',
-    'required' => true,
-    'minlength' => 7
 ];
+
+$errors = session('errors') ?? [];
 ?>
  <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
@@ -56,14 +55,18 @@ $password = [
     <div class="input-group has-validation">
         <span class="input-group-text" id="inputGroupPrepend">@</span>
         <?= form_input($username) ?>
-        <div class="invalid-feedback">Please enter your username.</div>
     </div>
+    <?php if (isset($errors['username'])) : ?>
+        <small class="text-danger"><?= esc($errors['username']) ?></small>
+    <?php endif; ?>
 </div>
 
 <div class="col-12">
     <label for="yourPassword" class="form-label">Password</label>
 		    <?= form_password($password) ?>
-    <div class="invalid-feedback">Please enter your password!</div>
+    <?php if (isset($errors['password'])) : ?>
+        <small class="text-danger"><?= esc($errors['password']) ?></small>
+    <?php endif; ?>
 </div>
 <div class="col-12">
     <?= form_submit('submit', 'Login', ['class' => 'btn btn-primary w-100']) ?>

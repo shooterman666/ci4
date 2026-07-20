@@ -1,5 +1,5 @@
 <?= $this->extend('layout') ?>
-<?= $this->section('content') ?> 
+<?= $this->section('content') ?>
 
 <?php
 if (session()->getFlashData('success')) {
@@ -24,9 +24,12 @@ if (session()->getFlashData('failed')) {
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
     Tambah Data
 </button>
-<a href="<?= base_url('produk/download') ?>" class="btn btn-success" target="_blank">
+<a class="btn btn-success" target="_blank" href="<?= base_url() ?>produk/download">
     Download Data
 </a>
+
+<?= $this->include('produk/modal_add') ?>
+<?= $this->include('produk/modal_edit') ?>
 
 <!-- Table with stripped rows -->
 <table class="table datatable">
@@ -43,13 +46,13 @@ if (session()->getFlashData('failed')) {
     <tbody>
         <?php foreach ($products as $index => $produk) : ?>
             <tr>
-                <th scope="row"><?php echo $index + 1 ?></th>
-                <td><?php echo $produk['nama'] ?></td>
-                <td><?php echo $produk['harga'] ?></td>
-                <td><?php echo $produk['jumlah'] ?></td>
+                <th scope="row"><?= $index + 1 ?></th>
+                <td><?= esc($produk['nama']) ?></td>
+                <td><?= esc($produk['harga']) ?></td>
+                <td><?= esc($produk['jumlah']) ?></td>
                 <td>
-                    <?php if ($produk['foto'] != '' and file_exists("img/" . $produk['foto'] . "")) : ?>
-                        <img src="<?php echo base_url() . "img/" . $produk['foto'] ?>" width="100">
+                    <?php if (($produk['foto'] ?? '') !== '' && file_exists(FCPATH . 'img/' . $produk['foto'])) : ?>
+                        <img src="<?= base_url('img/' . $produk['foto']) ?>" width="100" alt="<?= esc($produk['nama']) ?>">
                     <?php endif; ?>
                 </td>
                 <td>
@@ -64,9 +67,5 @@ if (session()->getFlashData('failed')) {
         <?php endforeach ?>
     </tbody>
 </table>
-<!-- End Table with stripped rows --> 
-
-<?= $this->include('produk/modal_add') ?>
-<?= $this->include('produk/modal_edit') ?>
-
+<!-- End Table with stripped rows -->
 <?= $this->endSection() ?>

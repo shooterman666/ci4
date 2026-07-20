@@ -8,27 +8,38 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        // Data statis untuk nicimici
-        $nicimici = [
-            'username' => 'nicimici',
-            'email'    => 'nicimici@example.com',
-            'password' => password_hash('12345678', PASSWORD_DEFAULT),
-            'role'     => 'admin',
-            'created_at' => date("Y-m-d H:i:s"),
-        ];
-        $this->db->table('user')->insert($nicimici);
-
         $faker = \Faker\Factory::create('id_ID');
-        
-        for ($i = 0; $i < 10; $i++) {
+        $userTable = $this->db->table('user');
+
+        $existingAdmin = $userTable->where('username', 'fuji')->get()->getRowArray();
+
+        $adminData = [
+            'username'   => 'fuji',
+            'email'      => 'fuji@example.com',
+            'password'   => password_hash('1234567', PASSWORD_DEFAULT),
+            'role'       => 'admin',
+            'picture'    => 'NiceAdmin/assets/img/profile-img.jpg',
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        if ($existingAdmin) {
+            $userTable->where('id', $existingAdmin['id'])->update($adminData);
+        } else {
+            $userTable->insert($adminData);
+        }
+
+        $currentTotal = $userTable->countAllResults();
+
+        for ($i = $currentTotal; $i < 10; $i++) {
             $data = [
-                'username' => $faker->unique()->userName,
-                'email' => $faker->unique()->email,
-                'password' => password_hash('1234567', PASSWORD_DEFAULT),
-                'role' => $faker->randomElement(['admin', 'guest']),
-                'created_at' => date("Y-m-d H:i:s"),
+                'username'   => $faker->unique()->userName,
+                'email'      => $faker->unique()->email,
+                'password'   => password_hash('1234567', PASSWORD_DEFAULT),
+                'role'       => $faker->randomElement(['admin', 'guest']),
+                'picture'    => 'NiceAdmin/assets/img/profile-img.jpg',
+                'created_at' => date('Y-m-d H:i:s'),
             ];
-            //print_r($data);
+
             $this->db->table('user')->insert($data);
         }
     }

@@ -10,7 +10,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link <?php echo (uri_string() == 'keranjang') ? "" : "collapsed" ?>" href="keranjang">
+        <a class="nav-link <?php echo (uri_string() == 'keranjang') ? "" : "collapsed" ?>" href="<?= base_url('keranjang') ?>">
           <i class="bi bi-cart-check"></i>
           <span>Keranjang</span>
         </a>
@@ -21,21 +21,21 @@
       ?>
 
       <li class="nav-item">
-        <a class="nav-link <?php echo (uri_string() == 'produk') ? "" : "collapsed" ?>" href="produk">
+        <a class="nav-link <?php echo (uri_string() == 'produk') ? "" : "collapsed" ?>" href="<?= base_url('produk') ?>">
           <i class="bi bi-receipt"></i>
           <span>Produk</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link <?php echo (uri_string() == 'history') ? "" : "collapsed" ?>" href="history">
-            <i class="bi bi-person"></i>
-            <span>History</span>
+        <a class="nav-link <?php echo (uri_string() == 'history') ? "" : "collapsed" ?>" href="<?= base_url('history') ?>">
+          <i class="bi bi-person"></i>
+          <span>History</span>
         </a>
       </li><!-- End History Nav -->
 
       <li class="nav-item">
-        <a class="nav-link <?php echo (uri_string() == 'profil') ? "" : "collapsed" ?>" href="profil">
+        <a class="nav-link <?php echo (uri_string() == 'profil') ? "" : "collapsed" ?>" href="<?= base_url('profil') ?>">
           <i class="bi bi-person"></i>
           <span>Profil</span>
         </a>

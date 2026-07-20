@@ -1,59 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Data Produk</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+<h1>Data Produk</h1>
+
+<table border="1" width="100%" cellpadding="5">
+    <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Harga</th>
+        <th>Jumlah</th>
+        <th>Foto</th>
+    </tr>
+
+    <?php foreach ($products as $index => $produk) : ?>
+        <?php
+        $path = FCPATH . 'img/' . $produk['foto'];
+        $base64 = '';
+
+        if (file_exists($path)) {
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
         }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        img {
-            max-width: 100px;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
-    <h1>Data Produk</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Harga</th>
-                <th>Jumlah</th>
-                <th>Foto</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $no = 1; foreach ($products as $p): ?>
-            <tr>
-                <td><?= $no++ ?></td>
-                <td><?= $p['nama'] ?></td>
-                <td><?= $p['harga'] ?></td>
-                <td><?= $p['jumlah'] ?></td>
-                <td>
-                    <?php 
-                    $imagePath = FCPATH . 'img/' . $p['foto'];
-                    if ($p['foto'] != '' && file_exists($imagePath)) {
-                        $type = pathinfo($imagePath, PATHINFO_EXTENSION);
-                        $data = file_get_contents($imagePath);
-                        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                        echo '<img src="' . $base64 . '" alt="Foto Produk">';
-                    } else {
-                        echo 'Tidak ada foto';
-                    }
-                    ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</body>
-</html>
+        ?>
+        <tr>
+            <td align="center"><?= $index + 1 ?></td>
+            <td><?= $produk['nama'] ?></td>
+            <td align="right">Rp <?= number_format($produk['harga'], 2, ',', '.') ?></td>
+            <td align="center"><?= $produk['jumlah'] ?></td>
+            <td align="center">
+                <?php if ($base64) : ?>
+                    <img src="<?= $base64 ?>" width="50">
+                <?php else : ?>
+                    Tidak ada gambar
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+Downloaded on <?= date('Y-m-d H:i:s') ?>

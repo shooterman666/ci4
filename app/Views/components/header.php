@@ -1,3 +1,9 @@
+<?php
+$picture = session('picture') ?? '';
+if ($picture !== '' && ! preg_match('/^https?:\/\//', $picture)) {
+  $picture = base_url($picture);
+}
+?>
  <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -169,7 +175,7 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="<?= session('picture') ?>" alt="Profile" class="rounded-circle">
+            <img src="<?= esc($picture) ?>" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2"><?= session()->get('username'); ?> (<?= session()->get('role'); ?>)</span>
           </a><!-- End Profile Iamge Icon -->
 

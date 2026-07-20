@@ -8,7 +8,7 @@
             </div>
             <?= form_open_multipart(base_url('produk')); ?>
             <?= csrf_field(); ?>
-            
+
             <div class="modal-body">
                 <div class="mb-3">
                     <?= form_label('Nama', 'nama'); ?>
@@ -17,10 +17,10 @@
                         'id'          => 'nama',
                         'class'       => 'form-control',
                         'placeholder' => 'Nama Barang',
-                        'required'    => true
+                        'required'    => true,
                     ]); ?>
                 </div>
-            
+
                 <div class="mb-3">
                     <?= form_label('Harga', 'harga'); ?>
                     <?= form_input([
@@ -28,10 +28,10 @@
                         'id'          => 'harga',
                         'class'       => 'form-control',
                         'placeholder' => 'Harga Barang',
-                        'required'    => true
+                        'required'    => true,
                     ]); ?>
                 </div>
-            
+
                 <div class="mb-3">
                     <?= form_label('Jumlah', 'jumlah'); ?>
                     <?= form_input([
@@ -40,28 +40,28 @@
                         'id'          => 'jumlah',
                         'class'       => 'form-control',
                         'placeholder' => 'Jumlah Barang',
-                        'required'    => true
+                        'required'    => true,
                     ]); ?>
                 </div>
-            
+
                 <div class="mb-3">
                     <?= form_label('Foto', 'foto'); ?>
                     <?= form_upload([
                         'name'  => 'foto',
                         'id'    => 'foto',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ]); ?>
                 </div>
             </div>
-            
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-            
+
                 <?= form_submit('submit', 'Simpan', ['class' => 'btn btn-primary']); ?>
             </div>
-            
+
             <?= form_close(); ?>
         </div>
     </div>

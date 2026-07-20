@@ -4,7 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
- 
+
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
 
@@ -15,9 +15,9 @@ class TransaksiController extends BaseController
     private $token;
 
     function __construct()
-    {  
-        $this->transactionModel = new TransactionModel(); 
-        $this->transactionDetailModel = new TransactionDetailModel(); 
+    {
+        $this->transactionModel = new TransactionModel();
+        $this->transactionDetailModel = new TransactionDetailModel();
         $this->token = env('MY_API_KEY');
     }
 
@@ -53,7 +53,7 @@ class TransaksiController extends BaseController
         }
 
         $start = $this->request->getGet('start');
-        $end   = $this->request->getGet('end'); 
+        $end   = $this->request->getGet('end');
 
         $page    = (int) ($this->request->getGet('page') ?? 1);
         $perPage = (int) ($this->request->getGet('per_page') ?? 10);
@@ -64,7 +64,7 @@ class TransaksiController extends BaseController
         if ($start && $end) {
             $query->where('created_at >=', $start)->where('created_at <=', $end);
         }
-        
+
         // Pagination
         $transactions = $query->paginate($perPage, 'default', $page);
 

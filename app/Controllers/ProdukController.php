@@ -3,15 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\ProductModel;
+use CodeIgniter\HTTP\ResponseInterface;
 use Dompdf\Dompdf;
 
 class ProdukController extends BaseController
 {
     protected $productModel;
 
-    function __construct()
+    public function __construct()
     {
         helper('form');
         $this->productModel = new ProductModel();
@@ -20,42 +20,25 @@ class ProdukController extends BaseController
     public function index()
     {
         return view('produk/index', [
-            'products' => $this->productModel->findAll()
+            'products' => $this->productModel->findAll(),
         ]);
-    }
-
-    public function download()
-    {
-        $products = $this->productModel->findAll();
-        $html = view('produk/download_pdf', ['products' => $products]);
-        
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $dompdf->stream(date('Y-m-d-H-i-s') . '-produk.pdf', ['Attachment' => true]);
     }
 
     public function create()
     {
-        $dataFoto = $this->request->getFile('foto');
-
+        $dataphoto = $this->request->getFile('foto');
         $dataForm = [
-            'nama' => $this->request->getPost('nama'),
-            'harga' => $this->request->getPost('harga'),
-            'jumlah' => $this->request->getPost('jumlah') 
+            'harga'  => $this->request->getPost('harga'),
+            'nama'   => $this->request->getPost('nama'),
+            'jumlah' => $this->request->getPost('jumlah'),
         ];
-
-        if ($dataFoto->isValid()) {
-            $fileName = $dataFoto->getRandomName(); 
-            $dataFoto->move('img/', $fileName);
-            
-            $dataForm['foto'] = $fileName;
+        if ($dataphoto && $dataphoto->isValid()) {
+            $nama_file = $dataphoto->getRandomName();
+            $dataphoto->move(FCPATH . 'img', $nama_file);
+            $dataForm['foto'] = $nama_file;
         }
-
         $this->productModel->insert($dataForm);
-
-        return redirect()->to('produk')->with('success', 'Data Berhasil Ditambah');
+        return redirect()->to(base_url('produk'))->with('success', 'Data Berhasil Ditambah');
     }
 
     public function edit($id)
@@ -63,41 +46,63 @@ class ProdukController extends BaseController
         $dataProduk = $this->productModel->find($id);
 
         $dataForm = [
-            'nama' => $this->request->getPost('nama'),
-            'harga' => $this->request->getPost('harga'),
-            'jumlah' => $this->request->getPost('jumlah') 
+            'harga'  => $this->request->getPost('harga'),
+            'nama'   => $this->request->getPost('nama'),
+            'jumlah' => $this->request->getPost('jumlah'),
         ];
 
         if ($this->request->getPost('check') == 1) {
-            if ($dataProduk['foto'] != '' and file_exists("img/" . $dataProduk['foto'])) {
-                unlink("img/" . $dataProduk['foto']);
+            if (! empty($dataProduk['foto']) && file_exists(FCPATH . 'img/' . $dataProduk['foto'])) {
+                unlink(FCPATH . 'img/' . $dataProduk['foto']);
             }
 
-            $dataFoto = $this->request->getFile('foto');
 
-            if ($dataFoto->isValid()) {
-                $fileName = $dataFoto->getRandomName();
-                $dataFoto->move('img/', $fileName);
-                
-                $dataForm['foto'] = $fileName;
+            $dataphoto = $this->request->getFile('foto');
+
+            if ($dataphoto && $dataphoto->isValid()) {
+                $nama_file = $dataphoto->getRandomName();
+                $dataphoto->move(FCPATH . 'img', $nama_file);
+
+                $dataForm['foto'] = $nama_file;
             }
         }
 
         $this->productModel->update($id, $dataForm);
 
-        return redirect()->to('produk')->with('success', 'Data Berhasil Diubah');
+        return redirect()->to(base_url('produk'))->with('success', 'Data Berhasil Diubah');
     }
 
     public function delete($id)
     {
         $dataProduk = $this->productModel->find($id);
-        
-        if ($dataProduk['foto'] != '' and file_exists("img/" . $dataProduk['foto'])) {
-            unlink("img/" . $dataProduk['foto']);
+
+        if (! empty($dataProduk['foto']) && file_exists(FCPATH . 'img/' . $dataProduk['foto'])) {
+            unlink(FCPATH . 'img/' . $dataProduk['foto']);
         }
-        
+
         $this->productModel->delete($id);
 
-        return redirect()->to('produk')->with('success', 'Data Berhasil Dihapus');
+
+        return redirect()->to(base_url('produk'))->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function download()
+    {
+        $products = $this->productModel->findAll();
+
+        $html = view('produk/download_pdf', [
+            'products' => $products,
+        ]);
+
+        $filename = date('Y-m-d-H-i-s') . '-produk.pdf';
+
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream($filename, [
+            'Attachment' => true,
+        ]);
     }
 }

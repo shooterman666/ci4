@@ -1,4 +1,4 @@
-<?php foreach ($products as $index => $produk) : ?>    
+<?php foreach ($products as $index => $produk) : ?>
     <!-- Edit Modal Begin -->
     <div class="modal fade" id="editModal-<?= $produk['id'] ?>" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -19,7 +19,7 @@
                             'class'       => 'form-control',
                             'value'       => $produk['nama'],
                             'placeholder' => 'Nama Barang',
-                            'required'    => true
+                            'required'    => true,
                         ]); ?>
                     </div>
 
@@ -31,35 +31,35 @@
                             'class'       => 'form-control',
                             'value'       => $produk['harga'],
                             'placeholder' => 'Harga Barang',
-                            'required'    => true
+                            'required'    => true,
                         ]); ?>
                     </div>
 
                     <div class="mb-3">
                         <?= form_label('Jumlah', 'jumlah'); ?>
                         <?= form_input([
-                            'type'        => 'number', 
+                            'type'        => 'number',
                             'name'        => 'jumlah',
                             'id'          => 'jumlah',
                             'class'       => 'form-control',
                             'value'       => $produk['jumlah'],
                             'placeholder' => 'Jumlah Barang',
-                            'required'    => true
+                            'required'    => true,
                         ]); ?>
                     </div>
 
                     <div class="mb-3">
-                        <?php if ($produk['foto'] != '') : ?>
-                            <img src="<?= base_url('img/' . $produk['foto']); ?>" width="100">
+                        <?php if (($produk['foto'] ?? '') !== '' && file_exists(FCPATH . 'img/' . $produk['foto'])) : ?>
+                            <img src="<?= base_url('img/' . $produk['foto']) ?>" width="100" alt="<?= esc($produk['nama']) ?>">
                         <?php endif; ?>
                     </div>
 
                     <div class="form-check mb-3">
                         <?= form_checkbox([
-                            'name'    => 'check',
-                            'id'      => 'check',
-                            'value'   => '1',
-                            'class'   => 'form-check-input'
+                            'name'  => 'check',
+                            'id'    => 'check',
+                            'value' => '1',
+                            'class' => 'form-check-input',
                         ]); ?>
 
                         <?= form_label(
@@ -74,7 +74,7 @@
                         <?= form_upload([
                             'name'  => 'foto',
                             'id'    => 'foto',
-                            'class' => 'form-control'
+                            'class' => 'form-control',
                         ]); ?>
                     </div>
                 </div>
